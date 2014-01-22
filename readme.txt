@@ -27,6 +27,16 @@ DocumentRoot "E:/cluster/apache2.4/htdocs"
 修改147行，把其中的内容修改成你的应用的路径
 <Context path="/glaf" docBase="e:/wechat/WebContent" reloadable="false"/>
 
+5)修改每个zookeeper的conf目录下的zoo.cfg
+找到12行及13行
+修改E:/cluster成你自己的安装目录
+dataDir=E:/cluster/zookeeper1/data
+dataLogDir=E:/cluster/zookeeper1/logs
+如果安装到三台机器，请修改32至34行
+server.1=localhost:2887:3887
+server.2=localhost:2888:3888
+server.3=localhost:2889:3889
+把localhost修改成每个Server对应的ip地址。
 
 =====================================================================================
 ==============================================安装说明===============================
@@ -44,7 +54,7 @@ Windows Server 2012 / R2
 2）安装apache服务
 执行apache2.4目录下的apache_installservice.bat
 
-3）安装zookeeper服务
+3）安装zookeeper服务（建议安装到3台机器）
 执行每个zookeeper的bin目录下的zk-installservice.bat
 
 4）安装memcached服务
