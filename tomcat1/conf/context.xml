@@ -64,7 +64,7 @@
 	<Valve className="com.glaf.cluster.catalina.session.ZooKeeperSessionHandlerValve" />
 
 	<Manager className="com.glaf.cluster.catalina.session.ZooKeeperSessionManager"
-	         servers="localhost:2181,localhost:2182,localhost:2183"
+	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
 	         maxInactiveInterval="7200"/>
 
 </Context>
