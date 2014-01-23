@@ -28,10 +28,9 @@ DocumentRoot "E:/cluster/apache2.4/htdocs"
 <Context path="/glaf" docBase="E:/cluster/WebContent" reloadable="false"/>
 
 5)修改每个zookeeper的conf目录下的zoo.cfg
-找到12行及13行
+找到12行
 修改E:/cluster成你自己的安装目录
 dataDir=E:/cluster/zookeeper1/data
-dataLogDir=E:/cluster/zookeeper1/logs
 如果安装到三台机器，请修改32至34行
 server.1=localhost:2887:3887
 server.2=localhost:2888:3888
