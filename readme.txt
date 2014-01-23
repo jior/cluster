@@ -21,11 +21,11 @@ DocumentRoot "E:/cluster/apache2.4/htdocs"
 
 3）tomcat1\conf\server.xml
 修改147行，把其中的内容修改成你的应用的路径
-<Context path="/glaf" docBase="e:/wechat/WebContent" reloadable="false"/>
+<Context path="/glaf" docBase="e:/glaf/WebContent" reloadable="false"/>
 
 4）tomcat2\conf\server.xml
 修改147行，把其中的内容修改成你的应用的路径
-<Context path="/glaf" docBase="e:/wechat/WebContent" reloadable="false"/>
+<Context path="/glaf" docBase="e:/glaf/WebContent" reloadable="false"/>
 
 5)修改每个zookeeper的conf目录下的zoo.cfg
 找到12行及13行
