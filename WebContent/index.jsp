@@ -22,6 +22,7 @@ request.setAttribute("year", sdf.format(new java.util.Date()));
 request.setAttribute("tomcat7Url", "http://tomcat.apache.org/");
 request.setAttribute("tomcat7DocUrl", "/docs/");
 request.setAttribute("tomcat7ExamplesUrl", "/examples/");
+System.out.println("session:"+session.getId());
 %>
 <html lang="en">
     <head>
