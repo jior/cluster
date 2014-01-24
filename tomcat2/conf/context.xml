@@ -61,16 +61,22 @@
 	          maxInactiveInterval="7200"
 	 />  --> 
 
-	<Valve className="com.glaf.cluster.catalina.session.MxZooKeeperSessionHandlerValve" />
+	<!-- <Valve className="com.glaf.cluster.catalina.session.MxZooKeeperSessionHandlerValve" />
 
 	<Manager className="com.glaf.cluster.catalina.session.MxZooKeeperSessionManager"
 	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
-	         maxInactiveInterval="7200"/> 
+	         maxInactiveInterval="7200"/>  -->
 
     <!-- <Valve className="com.glaf.cluster.catalina.session.ZooKeeperSessionHandlerValve" />
 
 	<Manager className="com.glaf.cluster.catalina.session.ZooKeeperSessionManager"
 	         servers="127.0.0.1:2181"
 	         maxInactiveInterval="7200"/> -->
+
+    <Valve className="com.glaf.cluster.catalina.session.ZKClientSessionHandlerValve" />
+
+	<Manager className="com.glaf.cluster.catalina.session.ZKClientSessionManager"
+	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
+	         maxInactiveInterval="7200"/>
 
 </Context>
