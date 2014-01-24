@@ -40,7 +40,7 @@
 	    sessionBackupAsync="false"
 	    sessionBackupTimeout="100"
         transcoderFactoryClass="de.javakaffee.web.msm.serializer.javolution.JavolutionTranscoderFactory"
-    /> -->
+    />  -->
 
 	<!-- <Manager className="de.javakaffee.web.msm.MemcachedBackupSessionManager"
 	    sticky="false"
@@ -50,7 +50,7 @@
 	    sessionBackupAsync="false"
 	    sessionBackupTimeout="100"
         transcoderFactoryClass="de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory"
-    />  -->
+    />   -->
 
 	<!-- <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
 
@@ -59,12 +59,18 @@
 	          port="6379"
 	          database="0"
 	          maxInactiveInterval="7200"
-	 />  -->
+	 />  --> 
 
-	<Valve className="com.glaf.cluster.catalina.session.ZooKeeperSessionHandlerValve" />
+	<Valve className="com.glaf.cluster.catalina.session.MxZooKeeperSessionHandlerValve" />
+
+	<Manager className="com.glaf.cluster.catalina.session.MxZooKeeperSessionManager"
+	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
+	         maxInactiveInterval="7200"/> 
+
+    <!-- <Valve className="com.glaf.cluster.catalina.session.ZooKeeperSessionHandlerValve" />
 
 	<Manager className="com.glaf.cluster.catalina.session.ZooKeeperSessionManager"
-	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
-	         maxInactiveInterval="7200"/>
+	         servers="127.0.0.1:2181"
+	         maxInactiveInterval="7200"/> -->
 
 </Context>
