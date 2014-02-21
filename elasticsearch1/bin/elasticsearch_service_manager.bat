@@ -1,0 +1,2 @@
+service.bat manager elasticsearch1
+pause
