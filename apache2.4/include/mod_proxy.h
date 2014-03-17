@@ -219,6 +219,10 @@ typedef struct {
     unsigned int error_override_set:1;
     unsigned int alias_set:1;
     unsigned int add_forwarded_headers:1;
+
+    /** Named back references */
+    apr_array_header_t *refs;
+
 } proxy_dir_conf;
 
 /* if we interpolate env vars per-request, we'll need a per-request
@@ -249,6 +253,7 @@ typedef struct {
     unsigned int need_flush:1; /* Flag to decide whether we need to flush the
                                 * filter chain or not */
     unsigned int inreslist:1;  /* connection in apr_reslist? */
+    const char   *uds_path;    /* Unix domain socket path */
 } proxy_conn_rec;
 
 typedef struct {
@@ -341,6 +346,7 @@ typedef struct {
     char      route[PROXY_WORKER_MAX_ROUTE_SIZE];     /* balancing route */
     char      redirect[PROXY_WORKER_MAX_ROUTE_SIZE];  /* temporary balancing redirection route */
     char      flusher[PROXY_WORKER_MAX_SCHEME_SIZE];  /* flush provider used by mod_proxy_fdpass */
+    char      uds_path[PROXY_WORKER_MAX_NAME_SIZE];   /* path to worker's unix domain socket if applicable */
     int             lbset;      /* load balancer cluster set */
     int             retries;    /* number of retries on this worker */
     int             lbstatus;   /* Current lbstatus */
@@ -585,6 +591,16 @@ typedef __declspec(dllimport) const char *
 
 
 /* Connection pool API */
+/**
+ * Return the user-land, UDS aware worker name
+ * @param p        memory pool used for displaying worker name
+ * @param worker   the worker
+ * @return         name
+ */
+
+PROXY_DECLARE(char *) ap_proxy_worker_name(apr_pool_t *p,
+                                           proxy_worker *worker);
+
 /**
  * Get the worker from proxy configuration
  * @param p        memory pool used for finding worker
@@ -982,6 +998,13 @@ APR_DECLARE_OPTIONAL_FN(int, ap_proxy_clear_connection,
  * @return  number of workers to allocate in the scoreboard
  */
 int ap_proxy_lb_workers(void);
+
+/**
+ * Return the port number of a known scheme (eg: http -> 80).
+ * @param scheme        scheme to test
+ * @return              port number or 0 if unknown
+ */
+PROXY_DECLARE(apr_port_t) ap_proxy_port_of_scheme(const char *scheme);
 
 extern module PROXY_DECLARE_DATA proxy_module;
 

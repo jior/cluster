@@ -84,7 +84,7 @@
 
 /* Restrict the server to a subset of Windows XP header files by default
  */
-#define _WIN32_WINNT 0x0502
+#define _WIN32_WINNT 0x0600
 #endif
 #ifndef NOUSER
 #define NOUSER
