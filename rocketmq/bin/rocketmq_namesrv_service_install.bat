@@ -1,0 +1,4 @@
+call namesrv_service.bat install rocketmq_namesrv
+pause
+call namesrv_service.bat start rocketmq_namesrv
+pause
