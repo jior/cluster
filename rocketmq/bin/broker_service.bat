@@ -168,7 +168,7 @@ if "%CONF_DIR%" == "" set CONF_DIR=%MQ_HOME%\conf
 
 
 set MQ_CLASSPATH=%MQ_CLASSPATH%;%MQ_HOME%/lib/*;
-set MQ_PARAMS=-Drocketmq;-Drocketmq.home.dir="%MQ_HOME%";-Dmq.cfg.path="%CONF_FILE%";-Dmq.default.path.home="%MQ_HOME%";-Dmq.default.path.logs="%LOG_DIR%";-Dmq.default.path.data="%DATA_DIR%";-Dmq.default.path.work="%WORK_DIR%";-Dmq.default.path.conf="%CONF_DIR%";-Djava.ext.dirs="%MQ_HOME%/lib";
+set MQ_PARAMS=-Drocketmq;-Drocketmq.home.dir="%MQ_HOME%";-Dmq.cfg.path="%CONF_FILE%";-Dmq.default.path.home="%MQ_HOME%";-Dmq.default.path.logs="%LOG_DIR%";-Dmq.default.path.data="%DATA_DIR%";-Dmq.default.path.work="%WORK_DIR%";-Dmq.default.path.conf="%CONF_DIR%";-Djava.ext.dirs="%MQ_HOME%/lib";-Drocketmq.namesrv.addr="127.0.0.1:9876"
 
 set JVM_OPTS=%JAVA_OPTS: =;%
 
