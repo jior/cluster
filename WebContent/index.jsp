@@ -19,7 +19,7 @@ limitations under the License.
 System.out.println("---------------------------------------------------");
 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyyMMdd");
 request.setAttribute("year", sdf.format(new java.util.Date()));
-//session.setAttribute("year", sdf.format(new java.util.Date()));
+session.setAttribute("year", sdf.format(new java.util.Date()));
 System.out.println("sessionId:"+session.getId());
 System.out.println("session value:"+session.getAttribute("year"));
 

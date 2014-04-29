@@ -24,8 +24,38 @@
   metadata-complete="true">
 
   <display-name>Welcome to Tomcat</display-name>
-  <description>
-     Welcome to Tomcat
-  </description>
+  <description>Welcome to Tomcat</description>
+
+    <filter>
+		<filter-name>hazelcast-filter</filter-name>
+		<filter-class>com.hazelcast.web.WebFilter</filter-class>
+		 
+		<init-param>
+			<param-name>map-name</param-name>
+			<param-value>glaf-sessions</param-value>
+		</init-param>
+		
+		<init-param>
+			<param-name>sticky-session</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		 
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+    </filter>
+
+	<filter-mapping>
+		<filter-name>hazelcast-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>com.hazelcast.web.SessionListener</listener-class>
+	</listener>
 
 </web-app>
