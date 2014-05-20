@@ -88,12 +88,12 @@
     -->
 
 	<Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
-        maxThreads="500" minSpareThreads="4"/>
+        maxThreads="2048" minSpareThreads="4"/>
 
 	<Connector executor="tomcatThreadPool"
                port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
                connectionTimeout="20000"
-               redirectPort="8443" />
+               redirectPort="8443" server="GLAF App Server 1.0"/>
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->
     <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" /> 
@@ -129,7 +129,7 @@
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
+            unpackWARs="false" autoDeploy="false">
 
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
