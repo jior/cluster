@@ -19,8 +19,6 @@
 #  Set JAVA_HOME or JRE_HOME if not already set, ensure any provided settings
 #  are valid and consistent with the selected start-up options and set up the
 #  endorsed directory.
-#
-#  $Id: setclasspath.sh 1430568 2013-01-08 22:08:57Z schultz $
 # -----------------------------------------------------------------------------
 
 # Make sure prerequisite environment variables are set

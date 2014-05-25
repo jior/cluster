@@ -14,30 +14,6 @@ rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 rem See the License for the specific language governing permissions and
 rem limitations under the License.
 
-rem The following line can be used to define a specific jre or jdk path
-rem set "JAVA_HOME=C:/JDK"
-
-REM Prefer a local JRE if we find one in the current bin directory
-IF EXIST "%~dp0jre" (
-  SET "JRE_HOME=%~dp0jre"
-) 
-
-REM Prefer a local JDK if we find one in the current bin directory
-IF EXIST "%~dp0jdk" (
-  SET "JAVA_HOME=%~dp0jdk"
-)
-
-@IF NOT "%ECHO%" == ""  ECHO %ECHO%
-@IF "%OS%" == "Windows_NT" setlocal
-
-IF "%OS%" == "Windows_NT" (
-  SET "DIRNAME=%~dp0%"
-) ELSE (
-  SET DIRNAME=.\
-)
-
-pushd %DIRNAME%
-
 rem ---------------------------------------------------------------------------
 rem NT Service Install/Uninstall script
 rem
@@ -48,33 +24,22 @@ rem remove                 Remove the service from the System.
 rem
 rem name        (optional) If the second argument is present it is considered
 rem                        to be new service name
-rem
-rem $Id: service.bat 1000718 2010-09-24 06:00:00Z mturk $
 rem ---------------------------------------------------------------------------
 
-SET proc=undefined
-
-IF /i %PROCESSOR_ARCHITECTURE% EQU X86 SET "proc=%~dp0Tomcat7.x86.exe"
-IF /i %PROCESSOR_ARCHITECTURE% EQU AMD64 SET "proc=%~dp0TomEE.amd64.exe"
-IF /i %PROCESSOR_ARCHITECTURE% EQU IA64 SET "proc=%~dp0TomEE.ia64.exe"
-
-IF /i "%proc%" EQU undefined (
-	ECHO Failed to determine OS architecture
-	GOTO end
-)
+setlocal
 
 set "SELF=%~dp0%service.bat"
 rem Guess CATALINA_HOME if not defined
 set "CURRENT_DIR=%cd%"
 if not "%CATALINA_HOME%" == "" goto gotHome
 set "CATALINA_HOME=%cd%"
-if exist "%CATALINA_HOME%\bin\service.bat" goto okHome
+if exist "%CATALINA_HOME%\bin\tomcat7.exe" goto okHome
 rem CD to the upper dir
 cd ..
 set "CATALINA_HOME=%cd%"
 :gotHome
-if exist "%CATALINA_HOME%\bin\service.bat" goto okHome
-echo The service exe was not found...
+if exist "%CATALINA_HOME%\bin\tomcat7.exe" goto okHome
+echo The tomcat7.exe was not found...
 echo The CATALINA_HOME environment variable is not defined correctly.
 echo This environment variable is needed to run this program
 goto end
@@ -106,11 +71,11 @@ if not "%CATALINA_BASE%" == "" goto gotBase
 set "CATALINA_BASE=%CATALINA_HOME%"
 :gotBase
 
-set "EXECUTABLE=%proc%"
+set "EXECUTABLE=%CATALINA_HOME%\bin\tomcat7.exe"
 
 rem Set default Service name
-set SERVICE_NAME=Tomcat7_cluster1
-set PR_DISPLAYNAME=Apache Tomcat7 cluster1
+set SERVICE_NAME=Tomcat7
+set DISPLAYNAME=Apache Tomcat 7.0 %SERVICE_NAME%
 
 if "x%1x" == "xx" goto displayUsage
 set SERVICE_CMD=%1
@@ -120,7 +85,7 @@ if "x%1x" == "xx" goto checkServiceCmd
 if "x%1x" == "x/userx" goto runAsUser
 if "x%1x" == "x--userx" goto runAsUser
 set SERVICE_NAME=%1
-set PR_DISPLAYNAME=Apache Tomcat7 (%1)
+set DISPLAYNAME=Apache Tomcat 7.0 %1
 shift
 if "x%1x" == "xx" goto checkServiceCmd
 goto checkUser
@@ -135,7 +100,7 @@ goto end
 if /i %SERVICE_CMD% == install goto doInstall
 if /i %SERVICE_CMD% == remove goto doRemove
 if /i %SERVICE_CMD% == uninstall goto doRemove
-echo Unknown parameter "%1"
+echo Unknown parameter "%SERVICE_CMD%"
 :displayUsage
 echo.
 echo Usage: service.bat install/remove [service_name] [/user username]
@@ -143,7 +108,11 @@ goto end
 
 :doRemove
 rem Remove the service
-"%EXECUTABLE%" //DS//%SERVICE_NAME%
+echo Removing the service '%SERVICE_NAME%' ...
+echo Using CATALINA_BASE:    "%CATALINA_BASE%"
+
+"%EXECUTABLE%" //DS//%SERVICE_NAME% ^
+    --LogPath "%CATALINA_BASE%\logs"
 if not errorlevel 1 goto removed
 echo Failed removing '%SERVICE_NAME%' service
 goto end
@@ -159,67 +128,44 @@ echo Using CATALINA_BASE:    "%CATALINA_BASE%"
 echo Using JAVA_HOME:        "%JAVA_HOME%"
 echo Using JRE_HOME:         "%JRE_HOME%"
 
-rem Use the environment variables as an example
-rem Each command line option is prefixed with PR_
-
-set "PR_DESCRIPTION=Apache Tomcat7"
-set "PR_INSTALL=%EXECUTABLE%"
-set "PR_LOGPATH=%CATALINA_BASE%\logs"
-set "PR_CLASSPATH=%CATALINA_HOME%\bin\bootstrap.jar;%CATALINA_BASE%\bin\tomcat-juli.jar;%CATALINA_HOME%\bin\tomcat-juli.jar"
-rem Set the server jvm from JAVA_HOME
-set "PR_JVM=%JRE_HOME%\bin\server\jvm.dll"
-if exist "%PR_JVM%" goto foundJvm
-rem Set the client jvm from JAVA_HOME
-set "PR_JVM=%JRE_HOME%\bin\client\jvm.dll"
-if exist "%PR_JVM%" goto foundJvm
-set PR_JVM=auto
+rem Try to use the server jvm
+set "JVM=%JRE_HOME%\bin\server\jvm.dll"
+if exist "%JVM%" goto foundJvm
+rem Try to use the client jvm
+set "JVM=%JRE_HOME%\bin\client\jvm.dll"
+if exist "%JVM%" goto foundJvm
+echo Warning: Neither 'server' nor 'client' jvm.dll was found at JRE_HOME.
+set JVM=auto
 :foundJvm
-echo Using JVM:              "%PR_JVM%"
+echo Using JVM:              "%JVM%"
+
+set "CLASSPATH=%CATALINA_HOME%\bin\bootstrap.jar;%CATALINA_BASE%\bin\tomcat-juli.jar"
+if not "%CATALINA_HOME%" == "%CATALINA_BASE%" set "CLASSPATH=%CLASSPATH%;%CATALINA_HOME%\bin\tomcat-juli.jar"
 
 "%EXECUTABLE%" //IS//%SERVICE_NAME% ^
-    --DisplayName=%SERVICE_NAME% ^
+    --Description "Apache Tomcat 7.0.54 Server - http://tomcat.apache.org/" ^
+    --DisplayName "%DISPLAYNAME%" ^
+    --Install "%EXECUTABLE%" ^
+    --LogPath "%CATALINA_BASE%\logs" ^
+    --StdOutput auto ^
+    --StdError auto ^
+    --Classpath "%CLASSPATH%" ^
+    --Jvm "%JVM%" ^
+    --StartMode jvm ^
+    --StopMode jvm ^
+    --StartPath "%CATALINA_HOME%" ^
+    --StopPath "%CATALINA_HOME%" ^
     --StartClass org.apache.catalina.startup.Bootstrap ^
     --StopClass org.apache.catalina.startup.Bootstrap ^
     --StartParams start ^
     --StopParams stop ^
-    --Startup auto ^
-    --JvmMs=512 ^
-    --JvmMx=1024 ^
-    --JvmSs=2048 ^
-    --StartMode jvm ^
-    --StopMode jvm ^
-    --LogLevel Info ^
-    --LogPrefix Tomcat7
-    
-echo Installed, will now configure Tomcat7
-    
+    --JvmOptions "-Dcatalina.home=%CATALINA_HOME%;-Dcatalina.base=%CATALINA_BASE%;-Djava.endorsed.dirs=%CATALINA_HOME%\endorsed;-Djava.io.tmpdir=%CATALINA_BASE%\temp;-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager;-Djava.util.logging.config.file=%CATALINA_BASE%\conf\logging.properties" ^
+    --JvmMs 128 ^
+    --JvmMx 256
 if not errorlevel 1 goto installed
 echo Failed installing '%SERVICE_NAME%' service
 goto end
-
 :installed
-rem Clear the environment variables. They are not needed any more.
-set PR_DISPLAYNAME=
-set PR_DESCRIPTION=
-set PR_INSTALL=
-set PR_LOGPATH=
-set PR_CLASSPATH=
-set PR_JVM=
-
-rem Set extra parameters
-"%EXECUTABLE%" //US//%SERVICE_NAME% ^
-	++JvmOptions "-Dcatalina.base=%CATALINA_BASE%;-Dcatalina.home=%CATALINA_HOME%;-Djava.endorsed.dirs=%CATALINA_HOME%\endorsed"
-
-rem More extra parameters
-set "PR_LOGPATH=%CATALINA_BASE%\logs"
-set PR_STDOUTPUT=auto
-set PR_STDERROR=auto
-
-rem before this option was added: "++JvmOptions=-Djava.library.path="%CATALINA_BASE%\bin" ^"
-rem the drawback was it was preventing custom native lib to be loaded even if added to Path
-"%EXECUTABLE%" //US//%SERVICE_NAME% ^
-	++JvmOptions "-Djava.io.tmpdir=%CATALINA_BASE%\temp;-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager;-Djava.util.logging.config.file=%CATALINA_BASE%\conf\logging.properties;-Djava.awt.headless=true;-XX:+UseParallelGC;-XX:MaxPermSize=256M"
-
 echo The service '%SERVICE_NAME%' has been installed.
 
 :end
