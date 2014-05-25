@@ -178,6 +178,8 @@ set LOGGING_CONFIG=-Djava.util.logging.config.file="%CATALINA_BASE%\conf\logging
 :noJuliConfig
 set JAVA_OPTS=%JAVA_OPTS% %LOGGING_CONFIG%
 
+set JAVA_OPTS=%JAVA_OPTS% -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m
+
 if not "%LOGGING_MANAGER%" == "" goto noJuliManager
 set LOGGING_MANAGER=-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
 :noJuliManager
