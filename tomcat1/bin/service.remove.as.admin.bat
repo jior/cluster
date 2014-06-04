@@ -30,4 +30,4 @@ if "%OS%" == "Windows_NT" (
 
 pushd %DIRNAME%
 
-service remove TomEE
+service remove
