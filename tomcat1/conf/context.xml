@@ -80,11 +80,11 @@
 			 serializationStrategyClass="com.glaf.cluster.catalina.session.JavaSerializer"
 	         maxInactiveInterval="7200"/> -->
 
-    <!-- <Valve className="com.glaf.cluster.catalina.session.CuratorSessionHandlerValve" />
+    <Valve className="com.glaf.cluster.catalina.session.CuratorSessionHandlerValve" />
 
 	<Manager className="com.glaf.cluster.catalina.session.CuratorSessionManager"
 	         servers="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"
 			 serializationStrategyClass="com.glaf.cluster.catalina.session.JavaSerializer"
-	         maxInactiveInterval="7200"/> -->
+	         maxInactiveInterval="7200"/> 
 
 </Context>
