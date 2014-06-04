@@ -151,6 +151,7 @@ if not "%CATALINA_HOME%" == "%CATALINA_BASE%" set "CLASSPATH=%CLASSPATH%;%CATALI
     --StdError auto ^
     --Classpath "%CLASSPATH%" ^
     --Jvm "%JVM%" ^
+    --Startup auto ^
     --StartMode jvm ^
     --StopMode jvm ^
     --StartPath "%CATALINA_HOME%" ^
