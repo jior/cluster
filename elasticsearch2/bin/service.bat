@@ -168,7 +168,7 @@ if "%CONF_DIR%" == "" set CONF_DIR=%ES_HOME%\config
 
 if "%CONF_FILE%" == "" set CONF_FILE=%ES_HOME%\config\elasticsearch.yml
 
-set ES_CLASSPATH=%ES_CLASSPATH%;%ES_HOME%/lib/elasticsearch-%ES_VERSION%.jar;%ES_HOME%/lib/*;%ES_HOME%/lib/sigar/*
+set ES_CLASSPATH=%ES_CLASSPATH%;%ES_HOME%/lib/elasticsearch.jar;%ES_HOME%/lib/*;%ES_HOME%/lib/sigar/*
 set ES_PARAMS=-Delasticsearch;-Des.path.home="%ES_HOME%";-Des.default.config="%CONF_FILE%";-Des.default.path.home="%ES_HOME%";-Des.default.path.logs="%LOG_DIR%";-Des.default.path.data="%DATA_DIR%";-Des.default.path.work="%WORK_DIR%";-Des.default.path.conf="%CONF_DIR%"
 
 set JVM_OPTS=%JAVA_OPTS: =;%
