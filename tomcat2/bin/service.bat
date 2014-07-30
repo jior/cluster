@@ -74,7 +74,7 @@ set "CATALINA_BASE=%CATALINA_HOME%"
 set "EXECUTABLE=%CATALINA_HOME%\bin\tomcat7.exe"
 
 rem Set default Service name
-set SERVICE_NAME=Tomcat9090
+set SERVICE_NAME=tomcat9090
 set DISPLAYNAME=Apache Tomcat %SERVICE_NAME%
 
 if "x%1x" == "xx" goto displayUsage
@@ -85,7 +85,7 @@ if "x%1x" == "xx" goto checkServiceCmd
 if "x%1x" == "x/userx" goto runAsUser
 if "x%1x" == "x--userx" goto runAsUser
 set SERVICE_NAME=%1
-set DISPLAYNAME=Apache Tomcat %1
+set DISPLAYNAME=Apache %1
 shift
 if "x%1x" == "xx" goto checkServiceCmd
 goto checkUser
@@ -160,7 +160,7 @@ if not "%CATALINA_HOME%" == "%CATALINA_BASE%" set "CLASSPATH=%CLASSPATH%;%CATALI
     --StopClass org.apache.catalina.startup.Bootstrap ^
     --StartParams start ^
     --StopParams stop ^
-    --JvmOptions "-Dcatalina.home=%CATALINA_HOME%;-Dcatalina.base=%CATALINA_BASE%;-Djava.endorsed.dirs=%CATALINA_HOME%\endorsed;-Djava.io.tmpdir=%CATALINA_BASE%\temp;-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager;-Djava.util.logging.config.file=%CATALINA_BASE%\conf\logging.properties" ^
+    --JvmOptions "-DdeploymentSystemName=xz;-Dcatalina.home=%CATALINA_HOME%;-Dcatalina.base=%CATALINA_BASE%;-Djava.endorsed.dirs=%CATALINA_HOME%\endorsed;-Djava.io.tmpdir=%CATALINA_BASE%\temp;-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager;-Djava.util.logging.config.file=%CATALINA_BASE%\conf\logging.properties" ^
     --JvmMs 512 ^
     --JvmMx 1024 ^
     ++JvmOptions "-XX:MaxPermSize=256M"

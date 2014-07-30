@@ -146,7 +146,9 @@
 
         <!-- <Context path="/glaf" docBase="E:/cluster/WebContent" reloadable="false"/> -->
 
-		<Context path="/glaf" docBase="E:/glaf/workspace/glaf-web/WebContent" reloadable="false"/>
+		<Context path="/glaf" docBase="e:/isdp/workspace/glaf-web/WebContent" reloadable="false"/>
+
+		<!-- <Context path="/wechat" docBase="e:/wechat/WebContent" reloadable="false"/> -->
 
       </Host>
     </Engine>
