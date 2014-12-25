@@ -1,4 +1,5 @@
-sc create redis-master binpath= "E:\cluster\redis-master\RedisService.exe E:\cluster\redis-master\redis.conf  " start= auto
+redis-server --service-install E:\cluster\redis-master\redis.windows.conf --service-name "redis_master" --loglevel verbose  
 pause
-sc start redis-master 
+redis-server --service-start  --service-name "redis_master"
 pause
+cmd

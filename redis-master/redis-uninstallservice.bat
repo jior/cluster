@@ -1,4 +1,2 @@
-sc stop redis-master
-pause
-sc delete redis-master
+redis-server --service-uninstall --service-name "redis_master"
 pause

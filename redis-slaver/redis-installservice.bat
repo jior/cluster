@@ -1,4 +1,5 @@
-sc create redis-slaver binpath= "E:\cluster\redis-slaver\RedisService.exe E:\cluster\redis-slaver\redis.conf  " start= auto
+redis-server.exe --service-install "E:\cluster\redis-slaver\redis.windows.conf" --service-name "redis_slaver" --loglevel verbose
 pause
-sc start redis-slaver 
+redis-server --service-start  --service-name "redis_slaver"
 pause
+cmd

@@ -1,4 +1,2 @@
-sc stop redis-slaver
-pause
-sc delete redis-slaver
+redis-server --service-uninstall --service-name "redis_slaver"
 pause
